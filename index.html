@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quién Quiere Ser Millonario?</title>
+    <meta name="description" content="Juego de trivia basado en el famoso programa ¿Quién Quiere Ser Millonario? con 20 niveles de preguntas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Pantalla de Inicio -->
+    <div id="start-screen" class="screen active">
+        <div class="start-container">
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <h1 class="game-title">¿Quién Quiere Ser</h1>
+                <h1 class="game-title millionaire">Millonario?</h1>
+            </div>
+            
+            <div class="start-options">
+                <div class="option-group">
+                    <label for="category-select">Categoría</label>
+                    <select id="category-select">
+                        <option value="all">🎲 Todas las categorías</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label for="timer-select">Temporizador</label>
+                    <select id="timer-select">
+                        <option value="0">⏱️ Sin tiempo</option>
+                        <option value="30">⏱️ 30 segundos</option>
+                        <option value="60">⏱️ 60 segundos</option>
+                        <option value="90">⏱️ 90 segundos</option>
+                    </select>
+                </div>
+                
+                <button id="start-btn" class="btn-start">
+                    <span class="btn-text">🎮 ¡Comenzar!</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+            
+            <div class="high-score">
+                <span class="high-score-label">Mejor Puntuación:</span>
+                <span id="high-score-value" class="high-score-value">$0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla del Juego -->
+    <div id="game-screen" class="screen">
+        <div class="game-container">
+            <!-- Header con información -->
+            <header class="game-header">
+                <div class="current-prize">
+                    <span class="prize-label">Premio Actual</span>
+                    <span id="current-prize-value" class="prize-value">$0</span>
+                </div>
+                <div id="timer-display" class="timer-container hidden">
+                    <div class="timer-ring">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"/>
+                            <circle id="timer-circle" class="timer-progress" cx="50" cy="50" r="45"/>
+                        </svg>
+                        <span id="timer-value" class="timer-value">60</span>
+                    </div>
+                </div>
+                <div class="question-counter">
+                    <span class="counter-label">Pregunta</span>
+                    <span id="question-counter-value" class="counter-value">1/20</span>
+                </div>
+            </header>
+
+            <!-- Comodines -->
+            <div class="lifelines">
+                <button class="lifeline" id="fifty-fifty" title="50:50 - Elimina dos respuestas incorrectas">
+                    <span class="lifeline-icon">50:50</span>
+                    <span class="lifeline-name">50:50</span>
+                </button>
+                <button class="lifeline" id="phone-friend" title="Llamar a un amigo">
+                    <span class="lifeline-icon">📞</span>
+                    <span class="lifeline-name">Llamada</span>
+                </button>
+                <button class="lifeline" id="audience" title="Ayuda del público">
+                    <span class="lifeline-icon">👥</span>
+                    <span class="lifeline-name">Público</span>
+                </button>
+            </div>
+
+            <!-- Contenedor de pregunta -->
+            <div class="question-wrapper">
+                <div class="question-container">
+                    <div class="question-badge" id="question-category">📜 Historia</div>
+                    <h2 id="question" class="question-text">Cargando pregunta...</h2>
+                </div>
+                
+                <div class="options-container" id="options">
+                    <button class="option" data-index="0">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Opción A</span>
+                    </button>
+                    <button class="option" data-index="1">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">Opción B</span>
+                    </button>
+                    <button class="option" data-index="2">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Opción C</span>
+                    </button>
+                    <button class="option" data-index="3">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">Opción D</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Escalera de premios -->
+            <aside class="prize-ladder" id="prize-ladder">
+                <div class="prize-ladder-header">
+                    <span>💰 Premios</span>
+                </div>
+                <div class="prize-levels">
+                    <div class="prize-level" data-level="19">$20,000,000</div>
+                    <div class="prize-level" data-level="18">$10,000,000</div>
+                    <div class="prize-level" data-level="17">$5,000,000</div>
+                    <div class="prize-level" data-level="16">$3,000,000</div>
+                    <div class="prize-level" data-level="15">$1,500,000</div>
+                    <div class="prize-level milestone" data-level="14">$1,000,000</div>
+                    <div class="prize-level" data-level="13">$750,000</div>
+                    <div class="prize-level" data-level="12">$500,000</div>
+                    <div class="prize-level" data-level="11">$250,000</div>
+                    <div class="prize-level" data-level="10">$150,000</div>
+                    <div class="prize-level milestone" data-level="9">$100,000</div>
+                    <div class="prize-level" data-level="8">$75,000</div>
+                    <div class="prize-level" data-level="7">$50,000</div>
+                    <div class="prize-level" data-level="6">$20,000</div>
+                    <div class="prize-level" data-level="5">$10,000</div>
+                    <div class="prize-level milestone" data-level="4">$5,000</div>
+                    <div class="prize-level" data-level="3">$2,000</div>
+                    <div class="prize-level" data-level="2">$1,000</div>
+                    <div class="prize-level" data-level="1">$500</div>
+                    <div class="prize-level current" data-level="0">$100</div>
+                </div>
+            </aside>
+
+            <!-- Botón para mostrar/ocultar escalera en móvil -->
+            <button id="toggle-ladder" class="toggle-ladder">
+                💰 <span id="toggle-ladder-text">Ver Premios</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Fin -->
+    <div id="end-screen" class="screen">
+        <div class="end-container">
+            <div id="result-animation" class="result-animation"></div>
+            <h2 id="result-title" class="result-title">¡Juego Terminado!</h2>
+            <p id="result-message" class="result-message">Has ganado</p>
+            <div class="final-prize">
+                <span id="final-prize-value" class="final-prize-value">$0</span>
+            </div>
+            <div class="end-stats">
+                <div class="stat">
+                    <span class="stat-label">Preguntas correctas</span>
+                    <span id="correct-count" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Categoría</span>
+                    <span id="final-category" class="stat-value">Todas</span>
+                </div>
+            </div>
+            <div class="end-buttons">
+                <button id="play-again-btn" class="btn-play-again">
+                    🔄 Jugar de nuevo
+                </button>
+                <button id="menu-btn" class="btn-menu">
+                    🏠 Menú principal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de comodín -->
+    <div id="lifeline-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Comodín</h3>
+            </div>
+            <div id="modal-body" class="modal-body">
+                <!-- Contenido dinámico -->
+            </div>
+            <button id="modal-close" class="btn-modal-close">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Audio elements removed in favor of Web Audio API -->
+
+    <script src="sounds.js"></script>
+    <script src="questions.js"></script>
+    <script src="logica.js"></script>
+</body>
+</html>
