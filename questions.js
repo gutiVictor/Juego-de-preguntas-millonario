@@ -2805,7 +2805,7 @@ const QUESTIONS_DATABASE = {
           difficulty: "medium",
           question: "¿Qué tecnología permite editar genes con alta precisión?",
           options: ["PCR", "CRISPR", "Electroporación", "Clonación somática"],
-          correct: 1,
+          "correct": 1,
         },
         {
           difficulty: "medium",
@@ -5798,3 +5798,5 @@ const QUESTIONS_DATABASE = {
     timerOptions: [0, 15,30, 60, 90],
   },
 };
+
+

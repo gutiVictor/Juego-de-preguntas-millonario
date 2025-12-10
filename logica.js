@@ -90,11 +90,19 @@ const elements = {
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
-    cacheElements();
-    loadHighScore();
-    await loadQuestions();
-    setupEventListeners();
-    populateCategorySelect();
+    try {
+        cacheElements();
+        loadHighScore();
+        await loadQuestions();
+        await loadSettings();
+        setupEventListeners();
+        populateCategorySelect();
+    } catch (error) {
+        console.error('Error durante la inicialización:', error);
+        // Continuar con la inicialización básica incluso si hay errores
+        setupEventListeners();
+        populateCategorySelect();
+    }
 }
 
 function cacheElements() {
@@ -160,6 +168,26 @@ async function loadQuestions() {
     }
 }
 
+async function loadSettings() {
+    try {
+        // Usar configuraciones locales (no cargar desde URL remota)
+        const settings = {
+            timerOptions: [0, 30, 60, 90],
+            categories: ['general', 'history', 'science']
+        };
+
+        console.log('Configuraciones cargadas:', settings);
+        return settings;
+    } catch (error) {
+        // Manejar cualquier error silenciosamente y devolver valores por defecto
+        console.warn('Error cargando configuraciones, usando valores por defecto:', error.message);
+        return {
+            timerOptions: [0, 30, 60, 90],
+            categories: ['general', 'history', 'science']
+        };
+    }
+}
+
 function getFallbackQuestions() {
     return [{
         id: 'general',
@@ -202,7 +230,10 @@ function saveHighScore(score) {
 
 function setupEventListeners() {
     // Botón de inicio
-    elements.startBtn.addEventListener('click', startGame);
+    elements.startBtn.addEventListener('click', () => {
+        // initializeGameQuestions(gameState.allQuestions);
+        startGame();
+    });
     
     // Comodines
     elements.fiftyFifty.addEventListener('click', useFiftyFifty);
@@ -762,7 +793,7 @@ function formatMoney(amount) {
     return '$' + amount.toLocaleString('en-US');
 }
 
-function shuffleArray(array) {
+function shuffleArray(array) { if (!Array.isArray(array)) { console.error('shuffleArray received non-array:', array); return []; }
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
